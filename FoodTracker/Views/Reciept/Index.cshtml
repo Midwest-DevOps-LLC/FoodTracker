@@ -1,0 +1,73 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="row">
+    <div class="col-12">
+        <progress id="progressBar" style="width:100%; display:none;"></progress>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <button type="button" class="btn btn-success float-end" onclick="btnUploadClicked()">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+<form enctype="multipart/form-data">
+    <input style="display:none;" name="file" type="file" id="fileUpload" />
+</form>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(document).on('change','#fileUpload' , function(){ UploadFile(); });
+        });
+
+        function btnUploadClicked(){
+            $('#fileUpload').click();
+        }
+
+        function UploadFile(){
+        $('#progressBar').css("display", "inline-block");
+        
+        $.ajax({
+        url: '/FileUpload/UploadLargeFile',
+        type: 'POST',
+        data: new FormData($('form')[0]), // File Data
+        cache: false,
+        contentType: false,
+        processData: false,
+        headers: {
+            //"filePath": btoa(currentPath) //This is how we know what path to upload the file to on the server
+        },
+        // Custom XMLHttpRequest
+        xhr: function () {
+          var myXhr = $.ajaxSettings.xhr();
+          if (myXhr.upload) {
+            // For handling the progress of the upload
+            myXhr.upload.addEventListener('progress', function (e) {
+              if (e.lengthComputable) {
+                $('#progressBar').attr({
+                  value: e.loaded,
+                  max: e.total,
+                });
+                if (e.loaded == e.total){ //Refresh the view after a file is done uploading
+                    //RefreshDirectoryView();
+                }
+              }
+            }, false);
+          }
+          return myXhr;
+        }
+      }).done(function (data) {
+        console.log(window.location);
+        window.location.replace(window.location.origin + "/reciept/Display?path=" + data);
+      });
+    }
+    </script>
+}

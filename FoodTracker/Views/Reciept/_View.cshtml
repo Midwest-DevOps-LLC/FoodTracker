@@ -1,0 +1,37 @@
+﻿@model FoodTracker.Models.RecieptViewModel
+
+@if (Model.WalmartReciept.Purchases.Count != Model.WalmartReciept.ItemCount)
+{
+    <div class="alert alert-warning" role="alert">
+        The item count doesn't match the purchases we found
+    </div>
+}
+
+<h3>@Model.WalmartReciept.Brand</h3>
+<img class="img-fluid" src="GetFileByPath?path=@(Model.ImagePath)"/>
+<table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">SKU</th>
+      <th scope="col">Price</th>
+      <th scope="col">Tax Type</th>
+      <th scope="col">Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var reciept in Model.WalmartReciept.Purchases)
+    {
+     <tr>
+      <td>@reciept.Product</td>
+      <td>@reciept.SKU</td>
+      <td>@reciept.Price</td>
+      <td>@reciept.TaxType</td>
+      <td>@reciept.Type</td>
+    </tr>  
+    }
+    </tbody>
+</table>
+<h6>Your total was $@Model.WalmartReciept.Total</h6>
+<h6>Payment method was @Model.WalmartReciept.Card</h6>
+<h6>Purchase Date @Model.WalmartReciept.DateTime</h6>
