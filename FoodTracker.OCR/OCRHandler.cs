@@ -20,7 +20,7 @@ namespace FoodTracker.OCR
             {
                 //set `<your-endpoint>` and `<your-key>` variables with the values from the Azure portal to create your `AzureKeyCredential` and `DocumentAnalysisClient` instance
                 string endpoint = "https://testinstancemidwestdevops.cognitiveservices.azure.com/";
-                string key = "a0297f2b7ffc4e60805c2a8388b0ef81";
+                string key = "";
                 AzureKeyCredential credential = new AzureKeyCredential(key);
                 DocumentAnalysisClient client = new DocumentAnalysisClient(new Uri(endpoint), credential);
 
